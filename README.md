@@ -283,18 +283,21 @@ Display the chart using plt.show().
 - **ALWAYS** - human input is always requested. Human skip and trigger an auto-reply.
 
 
-  ```python
-  # when you have NEVER mode it will not accept the input from user in console. and  llm_config will be passed to the agent.   
+```  
+when you have NEVER mode it will not accept the input from user in console. and  llm_config will be passed to the agent.   
   llm_config=llm_config,
-  human_input_mode="NEVER",
+  human_input_mode="NEVER"
 
-  # when you have ALWAYS mode it will accept the input from user in console. and  llm_config will not be passed to the agent.
+when you have ALWAYS mode it will accept the input from user in console. and  llm_config will not be passed to the agent.
   llm_config=False,
-  human_input_mode="ALWAYS",
+  human_input_mode="ALWAYS"
+ ```
 
-```
 
 ### Example on guessing numbers to understand Human input
+
+
+
 
 ```python
 import os
@@ -354,6 +357,7 @@ except Exception as e:
     print(f"Error: {e}")
 
 ```
+
 ---
 
 ### Autogen connecting to the Tools
