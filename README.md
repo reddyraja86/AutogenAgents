@@ -1,6 +1,4 @@
-#  Setting up the development enviorment
-
-## To create a Python project that utilizes autogen with Jupyter Lab, follow these steps:
+##  Setting up the development environment
 
 ### Step 1: Set Up Virtual Environment
 
@@ -21,25 +19,24 @@
    You should now see a `(.env)` at the beginning of your prompt terminal line.
 
 
-### Step 2: Install Required Packages
+### Step 2: Install ollama LLM in local environment
 
-1. Install Jupyter Lab and Autogen:
+1. Download & install ollama from [here](https://ollama.com/)
 
-   With your virtual environment activated,
+### Step 3: Start the ollama model
 
-   install Jupyter Lab and Autogen: `pip install jupyterlab autogen`
+1. pull the ollama model from [here](https://ollama.com/)
 
-### Step 3: Launch Jupyter Lab
-
-1. Run Jupyter Lab:
-
-   Start Jupyter Lab by running:  `jupyter lab`
+2. following commands will help to pull the image and start the model
+![img.png](img.png)
+3. Helper commands in ollma
+![img_2.png](img_2.png)
+ 
 
 
 #### What is LLM?
 
 - LLM is a language model which is trained on a large dataset and can be used to generate text.
-- It is a type of AI model that is trained on a large amount of text data and can be used to generate text.
 
 ####  what is Agent?
 
@@ -50,8 +47,8 @@
 - Autogen is an open source framework programming framework that allows developers to build AI agents.
 
 -  Key Components of Autogen:
-  -  Core Component - Autogen Agent: The central element in Autogen is the autogen agent, which manages message sending and receiving. This agent can utilize different LLMs, execute Python code, and integrate human feedback into its processes.
-  -  Conversable Agent: This is a specific type of Autogen agent designed to enhance communication capabilities. It includes multiple components like a list of language models, a code executor, and a mechanism for integrating human feedback. The conversable agent is essentially a specialized version of the Autogen agent, tailored for interactive and conversational applications.
+    - **Autogen Agent:** The central element in Autogen is the autogen agent, which manages message sending and receiving. This agent can utilize different LLMs, execute Python code, and integrate human feedback into its processes.
+    - **Conversable Agent:** This is a specific type of Autogen agent designed to enhance communication capabilities. It includes multiple components like a list of language models, a code executor, and a mechanism for integrating human feedback. The conversable agent is essentially a specialized version of the Autogen agent, tailored for interactive and conversational applications.
 
 ### Create a first autoagen app
 
@@ -104,7 +101,7 @@ try:
         messages=  [  
             {
                 "role": "user",
-                "content": "What is the capital of France?"
+                "content": "Exaplaing  me about Java?"
             }
         ])
     print(response)
@@ -116,15 +113,19 @@ except Exception as e:
 ```
 
  ### Agents main taks
-1. Interacting with 'LLM'
-2. Interacting with 'tools' to get the work done
-3. Interacting with 'human inputs'
-4. Interacting with other agents
+1. Interacting with 'LLM' 
+   -  It like asking the questions to LLM and get the response.
+2. Interacting with 'tools' to get the work done 
+   - Like Using the tools to get the work done.for example you can use a java script functiona to read the data and pass the value to LLm to get the desired results 
+3. Interacting with 'human inputs' 
+   - Taking human inputs and responding to the user based on context provided.
+4. Interacting with other agents 
+   - Interacting with other agents to get the work done.
 
 
-### To do the above we have following in autogen
+### To do the above we have the following in autogen
 
-1. ##### ConversableAgent Agent: ( For everything we can use)
+1. ##### ConversableAgent Agent: ( For everything we can use as this is the super class)
    - Core agent type that can send and receive messages.
    - Highly customizable:
      - Integrates with LLMs, tools, and human input.
@@ -607,3 +608,265 @@ if __name__ == "__main__":
 
 ### Nested Chat
 
+## Processing Unstructured data
+
+- Unstructured.io is the library used to process unstructured data
+- Install the unstructured library 
+-  Processing unstructured data like 
+   1. Using online API
+   2. Using local library
+
+
+
+### 1. Using online API
+  - You're using the unstructured-client SDK to call Unstructured.io's hosted API.
+  - That’s why it needs:
+    - UNSTRUCTURED_API_KEY
+    - UNSTRUCTURED_API_URL
+  - Generate Key from unstructured website
+
+  👉 This method is using their cloud service, so API Key is mandatory. (They process your file on their servers.)
+```shell
+   pip install unstructured-client
+```
+
+### 2. Using local unstructured Library
+  - If you want to use only the open-source version (no API key, fully local),
+    then you don't need this unstructured_client library at all.
+  - Instead, your code will look much simpler — you can directly use the unstructured Python library on your machine!
+
+```shell
+ 
+#Install the needed package if not already:
+pip install "unstructured[all-docs]"
+#If you need OCR support (for scanned PDFs), you might also want:
+pip install pytesseract
+sudo apt install tesseract-ocr  # (for Ubuntu/Linux) or install for Windows
+```
+
+#### Read pdf file data using unstructured
+
+    from unstructured.partition.pdf import partition_pdf
+    import json
+    
+    input_filepath = "../pdfs/fake-memo.pdf"
+    
+    # Use the local partitioner
+    elements = partition_pdf(filename=input_filepath)
+    print(f"Number of elements: {len(elements)}")
+    
+    # Prepare output as JSON
+    element_dicts = [
+        {
+            "type": type(element).__name__, 
+            "text": element.text
+        } 
+            for element in elements
+        ]
+    print(f"Number of elements in JSON: {len(element_dicts)}")
+    # Convert to JSON string with indentation for readability
+    json_elements = json.dumps(element_dicts, indent=2)
+    
+    # Print the processed data
+    print(json_elements) 
+
+### Approach for processing
+
+
+Feeding unstructured data to a Large Language Model (LLM) involves several key steps to ensure that the data is properly prepared for processing. Here’s a breakdown of the steps:
+1. **Collect Data**   Get data from different sources (PDFs, text files, images, etc.).
+2. **Make It Uniform (Normalize)** Convert different data types into a standard format.
+3. **Clean the Data**  Remove extra stuff like page numbers, headers, or random text.
+4. **Add Extra Info (Metadata)** Attach useful details like who wrote it or when it was created.
+5. **Break into Pieces (Chunking)** Split the data into smaller parts to process better.
+6. **Prepare for the Model (Pre-process)** Convert the cleaned chunks into a format the LLM understands. So that vector database can save the model data
+7. **Send to LLM (Feed Data)**  Give the prepared data to the LLM for use.
+8. **Use the Output** Use the results from the LLM for search, summaries, answers, etc.
+
+![Unstructured_data_processing](data_processing.png)
+
+
+
+ ### Chunking
+    
+- chunking involves the process of breaking down the cleaned and normalized data into even smaller
+pieces, which can be fed into the large language model.
+#### **Types of Chunking**
+
+ - Naive approach
+ - Smart Approach
+
+
+### Processing the Data in any data and get the content
+
+```python
+import json
+import os
+from unstructured.partition.pdf import partition_pdf
+from unstructured.partition.docx import partition_docx
+from unstructured.partition.pptx import partition_pptx
+from unstructured.partition.text import partition_text
+from unstructured.partition.image import partition_image
+from unstructured.partition.html import partition_html
+
+# Add more as needed...
+
+input_directory = "../pdfs"
+
+# Iterate through all files in the directory
+for filename in os.listdir(input_directory):
+    input_filepath = os.path.join(input_directory, filename)
+    
+    # Skip directories
+    if not os.path.isfile(input_filepath):
+        continue
+
+    ext = os.path.splitext(input_filepath)[-1].lower()
+
+    # Decide which partitioner to use
+    if ext == ".pdf":
+        elements = partition_pdf(filename=input_filepath)
+    elif ext == ".docx":
+        elements = partition_docx(filename=input_filepath)
+    elif ext == ".pptx":
+        elements = partition_pptx(filename=input_filepath)
+    elif ext == ".txt":
+        elements = partition_text(filename=input_filepath)
+    elif ext in [".jpg", ".jpeg", ".png"]:
+        elements = partition_image(filename=input_filepath)
+    elif ext == ".html":
+        elements = partition_html(filename=input_filepath)
+    else:
+        print(f"Skipping unsupported file: {filename}")
+        continue
+
+    # Convert to dicts
+    element_dicts = [el.to_dict() for el in elements]
+
+    # Print as JSON
+    print(f"Processed file: {filename}")
+    print(json.dumps(element_dicts, indent=2))
+
+```
+
+#### Example application on chunking processing unstructured data, filtering & storing, chunking 
+
+```python
+# This script demonstrated how to read unstructured data from a PDF file,
+# process it, and store the results in a Chroma vector database and perform a hybrid search.
+# The script uses the Unstructured library to partition the PDF into elements,
+# It also includes error handling and metadata management.
+
+from unstructured.partition.pdf import partition_pdf
+from unstructured.staging.base import dict_to_elements
+from unstructured.chunking.title import chunk_by_title
+
+
+import json
+import chromadb
+
+input_filepath = "../pdfs/mindset.pdf"
+
+elements = partition_pdf(filename=input_filepath)
+
+# Prepare output including metadata
+element_dicts = []
+# Convert to dicts
+element_dicts = [el.to_dict() for el in elements]
+
+# Print as JSON
+print(f"Processed file: {input_filepath}")
+print(json.dumps(element_dicts, indent=2))
+
+
+# filter the elements based on the type of element
+try:
+        chapters = [
+            "Embracing a Growth Mindset",
+            "Strategies for Cultivating a Growth Mindset",
+            "I N T R O D U C T I O N",
+            "M I N D S E T",
+            "T H E D R I V E R",
+            "Growth vs. Fixed Mindset F I X E D",
+            "F I X E D",
+            "Activities",
+        ]
+        
+        chapter_ids = {}
+        for element in elements:
+            for chapter in chapters:
+                if element.text == chapter and element.category == "Title":
+                    chapter_ids[element.id] = chapter
+                    break
+
+        print("==== chapters IDs: \n")
+        print(chapter_ids)
+
+        print("==== Elements with parent ID>>>: \n")
+        chapter_to_id = {v: k for k, v in chapter_ids.items()}
+
+        res = [
+            x
+            for x in elements
+            if x.metadata.parent_id == chapter_to_id["Embracing a Growth Mindset"]
+        ]
+
+        # elements are objects, so you need to convert to dicts before dumping to JSON
+        print(json.dumps([el.to_dict() for el in res], indent=2))
+
+    
+        # Add elements to the Chroma collection
+        # Initialize Chroma DB
+        chroma_client = chromadb.PersistentClient(
+            path="chroma_tmp", settings=chromadb.Settings(allow_reset=False)
+        )
+
+        # Check if the collection already exists and is populated
+        collection_name = "mindset"
+        collection = chroma_client.get_or_create_collection(
+            name=collection_name, metadata={"hnsw:space": "cosine"}
+        )
+
+        if collection.count() > 0:
+            print(f"Collection '{collection_name}' already exists and is populated.")
+        else:
+            print(f"Collection '{collection_name}' does not exist or is empty.")
+            for element in elements:
+                parent_id = element.metadata.parent_id
+                chapter = chapter_ids.get(parent_id, "")
+                collection.add(
+                    documents=[element.text],
+                    ids=element._element_id,
+                    metadatas=[{"chapter": chapter}],
+                )
+            print("Documents have been added to the Chroma collection.") 
+except Exception as e:
+    print(f"Error: {e}")
+
+
+elements = dict_to_elements(element_dicts)  
+
+# Chunking content
+print("Chunking content...")
+elements = dict_to_elements(element_dicts)
+chunks = chunk_by_title(
+    elements, combine_text_under_n_chars=100, max_characters=300
+)
+print("==== Chunks: \n")
+# print(chunks)
+re = json.dumps(chunks[0].to_dict(), indent=2)
+print(re)
+
+print("elements:", len(elements))
+print("chunks:", len(chunks))
+
+# Perform a hybrid search with metadata
+result = collection.query(
+    query_texts=["A growth mindset believes in what?"],
+    n_results=2,
+    where={"chapter": "Embracing a Growth Mindset"},
+)
+print("\n==== Query Results ==== \n")
+print(json.dumps(result, indent=2))
+
+```
