@@ -1,9 +1,8 @@
+# Exploring Autogen, LLMs
 
-# Exploring AutoGen, LLMs  
+###  Setting up the Development environment
 
-##  Setting up the development environment
-
-### Step 1: Set Up Virtual Environment
+##### Step 1: Set Up Virtual Environment
 
 1. Install Virtual Environment:
 
@@ -17,24 +16,24 @@
 
 3. Activate the Virtual Environment:
 
-   On Windows: `myenv\Scripts\activate`
+      On Windows: `myenv\Scripts\activate`
 
-   You should now see a `(.env)` at the beginning of your prompt terminal line.
+      You should now see a `(.env)` at the beginning of your prompt terminal line.
 
 
-### Step 2: Install ollama LLM in local environment
+##### Step 2: Install ollama LLM in local environment
 
 1. Download & install ollama from [here](https://ollama.com/)
 
-### Step 3: Start the ollama model
+##### Step 3: Start the ollama model
 
 1. pull the ollama model from [here](https://ollama.com/)
 
-2. following commands will help to pull the image and start the model
-![img.png](img.png)
-3. Helper commands in ollma
-![img_2.png](img_2.png)
- 
+   2. following commands will help to pull the image and start the model
+      ![img.png](img.png)
+   3. Helper commands in ollma
+      ![img_2.png](img_2.png)
+
 
 
 #### What is LLM?
@@ -47,11 +46,12 @@
 
 # Autogen
 
-- Autogen is an open source framework programming framework that allows developers to build AI agents.
+- Autogen is Microsoft open source programming framework that allows developers to build AI agents.
 
--  Key Components of Autogen:
-    - **Autogen Agent:** The central element in Autogen is the autogen agent, which manages message sending and receiving. This agent can utilize different LLMs, execute Python code, and integrate human feedback into its processes.
-    - **Conversable Agent:** This is a specific type of Autogen agent designed to enhance communication capabilities. It includes multiple components like a list of language models, a code executor, and a mechanism for integrating human feedback. The conversable agent is essentially a specialized version of the Autogen agent, tailored for interactive and conversational applications.
+-  **Key Components of Autogen:**
+   -  Conversable Agent
+   -  UserProxy Agent
+   -  Assistant Agent
 
 ### Create a first autoagen app
 
@@ -69,7 +69,7 @@
  
  ```
 
-4. Code sample 
+4. Code sample
 
 ```python
 import os
@@ -115,40 +115,40 @@ except Exception as e:
 
 ```
 
- ### Agents main taks
-1. Interacting with 'LLM' 
-   -  It like asking the questions to LLM and get the response.
-2. Interacting with 'tools' to get the work done 
-   - Like Using the tools to get the work done.for example you can use a java script functiona to read the data and pass the value to LLm to get the desired results 
-3. Interacting with 'human inputs' 
-   - Taking human inputs and responding to the user based on context provided.
-4. Interacting with other agents 
-   - Interacting with other agents to get the work done.
+### Agents main taks
+1. Interacting with 'LLM'
+    -  It like asking the questions to LLM and get the response.
+2. Interacting with 'tools' to get the work done
+    - Like Using the tools to get the work done.for example you can use a java script functiona to read the data and pass the value to LLm to get the desired results
+3. Interacting with 'human inputs'
+    - Taking human inputs and responding to the user based on context provided.
+4. Interacting with other agents
+    - Interacting with other agents to get the work done.
 
 
 ### To do the above we have the following in autogen
 
 1. ##### ConversableAgent Agent: ( For everything we can use as this is the super class)
-   - Core agent type that can send and receive messages.
-   - Highly customizable:
-     - Integrates with LLMs, tools, and human input.
-     - Configurable settings like human_input_mode (e.g., NEVER) and code_execution_config (e.g., False).
-     - Supports default system messages to define agent behavior (e.g., "You are an AI assistant specializing in X, Y, Z").
+    - Core agent type that can send and receive messages.
+    - Highly customizable:
+        - Integrates with LLMs, tools, and human input.
+        - Configurable settings like human_input_mode (e.g., NEVER) and code_execution_config (e.g., False).
+        - Supports default system messages to define agent behavior (e.g., "You are an AI assistant specializing in X, Y, Z").
 2. ##### Assistant Agent ( Inherited from ConversableAgent ):
-   - Interacts with LLM.
-   - Acts as an AI assistant using LLMs (e.g., GPT-3, GPT-4).
-   - Capabilities:
-     - Writes Python code.
-     - Suggests corrections and bug fixes.
-     - Customizable with system messages and LLM configurations.
+    - Interacts with LLM.
+    - Acts as an AI assistant using LLMs (e.g., GPT-3, GPT-4).
+    - Capabilities:
+        - Writes Python code.
+        - Suggests corrections and bug fixes.
+        - Customizable with system messages and LLM configurations.
 3. ##### User Proxy Agent ( Inherited from ConversableAgent ):
-   - Takes human inputs and responds to the user.
-   - Acts on behalf of humans and interacts with them.
-   - Features:
-     - Requests human input for replies.
-     - Can execute code found in messages (if enabled).
-     - Configurable to disable code execution (code_execution_config=False).
- 4. ##### Group Chat Manager ( Inherited from ConversableAgent ):
+    - Takes human inputs and responds to the user.
+    - Acts on behalf of humans and interacts with them.
+    - Features:
+        - Requests human input for replies.
+        - Can execute code found in messages (if enabled).
+        - Configurable to disable code execution (code_execution_config=False).
+4. ##### Group Chat Manager ( Inherited from ConversableAgent ):
     - Orchestrates communication between multiple agents.
     - Useful when human_input_mode=NEVER to manage agent interactions without human involvement.
 
@@ -156,7 +156,7 @@ except Exception as e:
 
 
 
-### Example application on Useragent 
+### Example application on Useragent
 
 - Here user agent accepts the user inputs and connects with the Assistant agent which responds by connecting with the LLM
 
@@ -279,7 +279,7 @@ Display the chart using plt.show().
 """
 )
 ```
- 
+
 ### AutoGen supports 3 modes for human input:
 
 - **NEVER** - human input is never requested
@@ -361,16 +361,16 @@ except Exception as e:
 
 
 ### Autogen connecting to the Tools
- - We have no control on code written by autogen using LLM so we make use of the Tools 
- - We have no control over what an agent writes (code).
-   
-   **Tools in AutoGen:**
-   - Pre-defined functions
-   - Controlled actions
-   - Controlled availability
+- We have no control on code written by autogen using LLM so we make use of the Tools
+- We have no control over what an agent writes (code).
 
- #### Autogen tools are typically used to:
- - Extend AI Capabilities: They allow the assistant to perform specific tasks (e.g., calculations, data processing) by integrating external functions or APIs.
+  **Tools in AutoGen:**
+    - Pre-defined functions
+    - Controlled actions
+    - Controlled availability
+
+#### Autogen tools are typically used to:
+- Extend AI Capabilities: They allow the assistant to perform specific tasks (e.g., calculations, data processing) by integrating external functions or APIs.
 
 ```python
 import os
@@ -439,20 +439,20 @@ user_proxy.initiate_chat(assistant, message="What is the division of 7 and 5?")
 ```
 
 
-### Conversation Patterns 
+### Conversation Patterns
 
- - **Two-agent chat:** simplest conversation pattern with two agents chatting (used the initiate_chat method)
- - **Sequential** a series of two-agents linked  by a carryover mechanism
- - **Group Chat** involves more than two agents
- - **Nested Chat** combines a workflow into a single agent for reuse in larger workflows
-  
+- **Two-agent chat:** simplest conversation pattern with two agents chatting (used the initiate_chat method)
+- **Sequential** a series of two-agents linked  by a carryover mechanism
+- **Group Chat** involves more than two agents
+- **Nested Chat** combines a workflow into a single agent for reuse in larger workflows
+
 
 #### Sequential Conversation Patterns
 
- - This will allow us to chain multiple agents together in a sequential manner.
- - The first agent will initiate the conversation and the second agent will respond to the first agent.
- - The first agent will carry over the context to the second agent.
- - The second agent will carry over the context to the third agent and so on.
+- This will allow us to chain multiple agents together in a sequential manner.
+- The first agent will initiate the conversation and the second agent will respond to the first agent.
+- The first agent will carry over the context to the second agent.
+- The second agent will carry over the context to the third agent and so on.
 
 
 ```python
@@ -521,7 +521,7 @@ if __name__ == "__main__":
 
 #### Group Chat
 
- - Multiple agents can conmmunicate as a group
+- Multiple agents can conmmunicate as a group
 
 
 ```python
@@ -614,29 +614,29 @@ if __name__ == "__main__":
 ## Processing Unstructured data
 
 - Unstructured.io is the library used to process unstructured data
-- Install the unstructured library 
--  Processing unstructured data like 
-   1. Using online API
-   2. Using local library
+- Install the unstructured library
+-  Processing unstructured data like
+    1. Using online API
+    2. Using local library
 
 
 
 ### 1. Using online API
-  - You're using the unstructured-client SDK to call Unstructured.io's hosted API.
-  - That’s why it needs:
+- You're using the unstructured-client SDK to call Unstructured.io's hosted API.
+- That’s why it needs:
     - UNSTRUCTURED_API_KEY
     - UNSTRUCTURED_API_URL
-  - Generate Key from unstructured website
+- Generate Key from unstructured website
 
-  👉 This method is using their cloud service, so API Key is mandatory. (They process your file on their servers.)
+👉 This method is using their cloud service, so API Key is mandatory. (They process your file on their servers.)
 ```shell
    pip install unstructured-client
 ```
 
 ### 2. Using local unstructured Library
-  - If you want to use only the open-source version (no API key, fully local),
-    then you don't need this unstructured_client library at all.
-  - Instead, your code will look much simpler — you can directly use the unstructured Python library on your machine!
+- If you want to use only the open-source version (no API key, fully local),
+  then you don't need this unstructured_client library at all.
+- Instead, your code will look much simpler — you can directly use the unstructured Python library on your machine!
 
 ```shell
  
@@ -690,14 +690,14 @@ Feeding unstructured data to a Large Language Model (LLM) involves several key s
 
 
 
- ### Chunking
-    
+### Chunking
+
 - chunking involves the process of breaking down the cleaned and normalized data into even smaller
-pieces, which can be fed into the large language model.
+  pieces, which can be fed into the large language model.
 #### **Types of Chunking**
 
- - Naive approach
- - Smart Approach
+- Naive approach
+- Smart Approach
 
 
 ### Processing the Data in any data and get the content
@@ -752,7 +752,7 @@ for filename in os.listdir(input_directory):
 
 ```
 
-#### Example application on chunking processing unstructured data, filtering & storing, chunking 
+#### Example application on chunking processing unstructured data, filtering & storing, chunking
 
 ```python
 # This script demonstrated how to read unstructured data from a PDF file,
