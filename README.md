@@ -1,4 +1,22 @@
-# Exploring Autogen, LLMs
+
+# Autogen
+
+#### What is LLM?
+
+- LLM is a language model which is trained on a large dataset and can be used to generate text.
+
+####  what is Agent?
+
+- Agent is the one which take user question and interact with multiple tools and provide this info to LLM to get the desired answer
+
+- Autogen is Microsoft open source programming framework that allows developers to build AI agents.
+
+-  **Key Components of Autogen:**
+   -  Conversable Agent
+   -  UserProxy Agent
+   -  Assistant Agent
+
+---
 
 ###  Setting up the Development environment
 
@@ -16,9 +34,9 @@
 
 3. Activate the Virtual Environment:
 
-      On Windows: `myenv\Scripts\activate`
+   On Windows: `myenv\Scripts\activate`
 
-      You should now see a `(.env)` at the beginning of your prompt terminal line.
+   You should now see a `(.env)` at the beginning of your prompt terminal line.
 
 
 ##### Step 2: Install ollama LLM in local environment
@@ -34,25 +52,7 @@
    3. Helper commands in ollma
       ![img_2.png](img_2.png)
 
-
-
-#### What is LLM?
-
-- LLM is a language model which is trained on a large dataset and can be used to generate text.
-
-####  what is Agent?
-
-- Agent is the one which take user question and interact with multiple tools and provide this info to LLM to get the desired answer
-
-# Autogen
-
-- Autogen is Microsoft open source programming framework that allows developers to build AI agents.
-
--  **Key Components of Autogen:**
-   -  Conversable Agent
-   -  UserProxy Agent
-   -  Assistant Agent
-
+---
 ### Create a first autoagen app
 
 1. Create a new folder for your project.
@@ -75,10 +75,6 @@
 import os
 from autogen import ConversableAgent
 from dotenv import load_dotenv 
-
-# Load environment variables from .env file
-# This is useful if you have sensitive information like API keys
-load_dotenv()
 
 llm_config = {
     "config_list": [
@@ -114,48 +110,48 @@ except Exception as e:
 
 
 ```
-
+---
 ### Agents main taks
 1. Interacting with 'LLM'
-    -  It like asking the questions to LLM and get the response.
+   -  It like asking the questions to LLM and get the response.
 2. Interacting with 'tools' to get the work done
-    - Like Using the tools to get the work done.for example you can use a java script functiona to read the data and pass the value to LLm to get the desired results
+   - Like Using the tools to get the work done.for example you can use a java script functiona to read the data and pass the value to LLm to get the desired results
 3. Interacting with 'human inputs'
-    - Taking human inputs and responding to the user based on context provided.
+   - Taking human inputs and responding to the user based on context provided.
 4. Interacting with other agents
-    - Interacting with other agents to get the work done.
+   - Interacting with other agents to get the work done.
 
 
-### To do the above we have the following in autogen
+### To do the above we have the following Interfaces in Autogen
 
 1. ##### ConversableAgent Agent: ( For everything we can use as this is the super class)
-    - Core agent type that can send and receive messages.
-    - Highly customizable:
-        - Integrates with LLMs, tools, and human input.
-        - Configurable settings like human_input_mode (e.g., NEVER) and code_execution_config (e.g., False).
-        - Supports default system messages to define agent behavior (e.g., "You are an AI assistant specializing in X, Y, Z").
+   - Core agent type that can send and receive messages.
+   - Highly customizable:
+      - Integrates with LLMs, tools, and human input.
+      - Configurable settings like human_input_mode (e.g., NEVER) and code_execution_config (e.g., False).
+      - Supports default system messages to define agent behavior (e.g., "You are an AI assistant specializing in X, Y, Z").
 2. ##### Assistant Agent ( Inherited from ConversableAgent ):
-    - Interacts with LLM.
-    - Acts as an AI assistant using LLMs (e.g., GPT-3, GPT-4).
-    - Capabilities:
-        - Writes Python code.
-        - Suggests corrections and bug fixes.
-        - Customizable with system messages and LLM configurations.
+   - Interacts with LLM.
+   - Acts as an AI assistant using LLMs (e.g., GPT-3, GPT-4).
+   - Capabilities:
+      - Writes Python code.
+      - Suggests corrections and bug fixes.
+      - Customizable with system messages and LLM configurations.
 3. ##### User Proxy Agent ( Inherited from ConversableAgent ):
-    - Takes human inputs and responds to the user.
-    - Acts on behalf of humans and interacts with them.
-    - Features:
-        - Requests human input for replies.
-        - Can execute code found in messages (if enabled).
-        - Configurable to disable code execution (code_execution_config=False).
+   - Takes human inputs and responds to the user.
+   - Acts on behalf of humans and interacts with them.
+   - Features:
+      - Requests human input for replies.
+      - Can execute code found in messages (if enabled).
+      - Configurable to disable code execution (code_execution_config=False).
 4. ##### Group Chat Manager ( Inherited from ConversableAgent ):
-    - Orchestrates communication between multiple agents.
-    - Useful when human_input_mode=NEVER to manage agent interactions without human involvement.
+   - Orchestrates communication between multiple agents.
+   - Useful when human_input_mode=NEVER to manage agent interactions without human involvement.
 
 ![Build-in Agents in Autogen](Build-in%20Agents%20in%20Autogen.jpg)
 
 
-
+---
 ### Example application on Useragent
 
 - Here user agent accepts the user inputs and connects with the Assistant agent which responds by connecting with the LLM
@@ -164,23 +160,23 @@ except Exception as e:
 This program sets up a multi-agent system using the `autogen` library. Here's a summary of what it does:
 
 1. **Environment Setup**:
-    - Loads environment variables using `dotenv` for sensitive information like API keys.
+   - Loads environment variables using `dotenv` for sensitive information like API keys.
 
 2. **LLM Configuration**:
-    - Configures a language model (`llama3.2`) with a base URL and API key.
+   - Configures a language model (`llama3.2`) with a base URL and API key.
 
 3. **Agent Initialization**:
-    - Creates two agents:
-        - `UserProxyAgent`: Acts as a proxy for the user, responding only with the information it has.
-        - `AssistantAgent`: A helpful assistant agent with similar constraints.
+   - Creates two agents:
+      - `UserProxyAgent`: Acts as a proxy for the user, responding only with the information it has.
+      - `AssistantAgent`: A helpful assistant agent with similar constraints.
 
 4. **Agent Interaction**:
-    - The `UserProxyAgent` initiates a chat with the `AssistantAgent`. The interaction is limited to a maximum of 2 consecutive auto-replies.
+   - The `UserProxyAgent` initiates a chat with the `AssistantAgent`. The interaction is limited to a maximum of 2 consecutive auto-replies.
 
 5. **Error Handling**:
-    - Wraps the chat initiation in a `try-except` block to handle any exceptions gracefully.
-
-This program demonstrates a basic setup for building and interacting with multi-agent systems.
+   - Wraps the chat initiation in a `try-except` block to handle any exceptions gracefully.
+---
+####  This program demonstrates a basic setup for building and interacting with multi-agent systems.
 
 
 
@@ -233,7 +229,7 @@ except Exception as e:
 
 ```
 
-- Insome use cases Agent will generate the code and execute the same to store that code and execute we wil use the work_dir
+### Insome use cases Agent will generate the code and execute the same to store that code and execute we wil use the work_dir
 
 
 ``` python
@@ -279,7 +275,7 @@ Display the chart using plt.show().
 """
 )
 ```
-
+---
 ### AutoGen supports 3 modes for human input:
 
 - **NEVER** - human input is never requested
@@ -358,16 +354,16 @@ except Exception as e:
     print(f"Error: {e}")
 
 ```
-
+---
 
 ### Autogen connecting to the Tools
 - We have no control on code written by autogen using LLM so we make use of the Tools
 - We have no control over what an agent writes (code).
 
   **Tools in AutoGen:**
-    - Pre-defined functions
-    - Controlled actions
-    - Controlled availability
+   - Pre-defined functions
+   - Controlled actions
+   - Controlled availability
 
 #### Autogen tools are typically used to:
 - Extend AI Capabilities: They allow the assistant to perform specific tasks (e.g., calculations, data processing) by integrating external functions or APIs.
@@ -437,7 +433,7 @@ user_proxy.initiate_chat(assistant, message="What is the division of 7 and 5?")
 
 
 ```
-
+---
 
 ### Conversation Patterns
 
@@ -609,23 +605,25 @@ if __name__ == "__main__":
     
 ``` 
 
-### Nested Chat
+---
 
-## Processing Unstructured data
+# Unstructured 
+
+### Processing Unstructured data
 
 - Unstructured.io is the library used to process unstructured data
 - Install the unstructured library
 -  Processing unstructured data like
-    1. Using online API
-    2. Using local library
+   1. Using online API
+   2. Using local library
 
 
 
 ### 1. Using online API
 - You're using the unstructured-client SDK to call Unstructured.io's hosted API.
 - That’s why it needs:
-    - UNSTRUCTURED_API_KEY
-    - UNSTRUCTURED_API_URL
+   - UNSTRUCTURED_API_KEY
+   - UNSTRUCTURED_API_URL
 - Generate Key from unstructured website
 
 👉 This method is using their cloud service, so API Key is mandatory. (They process your file on their servers.)
@@ -652,7 +650,7 @@ sudo apt install tesseract-ocr  # (for Ubuntu/Linux) or install for Windows
     from unstructured.partition.pdf import partition_pdf
     import json
     
-    input_filepath = "../pdfs/fake-memo.pdf"
+    input_filepath = "../pdfs/demo.pdf"
     
     # Use the local partitioner
     elements = partition_pdf(filename=input_filepath)
